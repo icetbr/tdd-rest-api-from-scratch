@@ -1,11 +1,20 @@
 const Hapi = require('@hapi/hapi');
 const { MongoClient } = require('mongodb');
 
-const createUser = async (req) => {
+const create = async (req) => {
     const client = await MongoClient.connect('mongodb://localhost', { useNewUrlParser: true });
     const db = client.db('crudApp').collection('users');
 
-    return db.insertOne(req.payload);
+    const result = await db.insertOne(req.payload);
+    return result.ops[0];
+};
+
+const update = async (req) => {
+    const client = await MongoClient.connect('mongodb://localhost', { useNewUrlParser: true });
+    const db = client.db('crudApp').collection('users');
+
+    const result = await db.insertOne(req.payload);
+    return result.ops[0];
 };
 
 const server = Hapi.server({
@@ -14,6 +23,6 @@ const server = Hapi.server({
     debug: { request: ['error'] },
 });
 
-server.route({ method: 'POST', path: '/users', handler: createUser });
+server.route({ method: 'POST', path: '/users', handler: create });
 
 module.exports = server;

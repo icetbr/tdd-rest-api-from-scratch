@@ -4,7 +4,7 @@
   "description": "",
   "main": "userTest.js",
   "scripts": {
-    "test": "lab userTest.js"
+    "test": "lab -v userTest.js"
   },
   "author": "",
   "license": "ISC",

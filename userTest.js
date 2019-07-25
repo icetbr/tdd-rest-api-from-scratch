@@ -1,7 +1,7 @@
 const server = require('./user');
-const { MongoClient } = require('mongodb');
+const db = require('db');
 const { expect } = require('@hapi/code');
-const { test } = exports.lab = require('@hapi/lab').script();
+const { describe, it } = exports.lab = require('@hapi/lab').script();
 
 const findAllUsers = async () => {
     const client = await MongoClient.connect('mongodb://localhost', { useNewUrlParser: true });
@@ -23,12 +23,24 @@ const post = async (url, payload) => {
     return server.inject({ method: 'post', url, payload });
 };
 
-test('POST /users saves data to the database', async () => {
-    const payload = { name: 'John', username: 'john35', age: 35 };
-    await post('/users', payload);
+describe('POST /users', () => {
 
-    const actual = await findAllUsers();
+    it('creates a user in the database', async () => {
+        const payload = { name: 'John', username: 'john35', age: 35 };
+        await post('/users', payload);
 
-    const expected = [payload];
-    expect(actual).to.equal(expected);
+        const actual = await findAllUsers();
+        const expected = [payload];
+        expect(actual).to.equal(expected);
+    });
+
+    it('returns the created user', async () => {
+        const payload = { name: 'John', username: 'john35', age: 35 };
+        const response = await post('/users', payload);
+
+        const actual = response.result;
+        delete actual._id; // TODO make it better
+        const expected = payload;
+        expect(actual).to.equal(expected);
+    });
 });
