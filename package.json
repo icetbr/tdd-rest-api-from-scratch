@@ -2,9 +2,9 @@
   "name": "crudapp",
   "version": "1.0.0",
   "description": "",
-  "main": "userTest.js",
+  "main": "employeeTest",
   "scripts": {
-    "test": "lab -v userTest.js"
+    "test": "lab -v employeeTest.js"
   },
   "author": "",
   "license": "ISC",
