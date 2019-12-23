@@ -1,17 +1,26 @@
 {
-  "name": "crudapp",
+  "name": "tdd-rest-api-from-scratch",
   "version": "1.0.0",
-  "description": "",
-  "main": "employeeTest",
+  "description": "An exercise in experimenting, learning and remembering basic app building techniques",
+  "main": "employeeTest.js",
+  "dependencies": {
+    "@hapi/code": "^5.3.1",
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/lab": "^19.1.0",
+    "mongodb": "^3.2.7"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "lab -v employeeTest.js"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@hapi/code": "^5.3.1",
-    "@hapi/hapi": "^18.3.1",
-    "@hapi/lab": "^19.1.0",
-    "mongodb": "^3.2.7"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icetbr/tdd-rest-api-from-scratch.git"
+  },
+  "author": "icetbr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icetbr/tdd-rest-api-from-scratch/issues"
+  },
+  "homepage": "https://github.com/icetbr/tdd-rest-api-from-scratch#readme"
 }
