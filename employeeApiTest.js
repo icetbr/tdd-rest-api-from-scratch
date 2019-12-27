@@ -24,12 +24,13 @@ test('POST /employees saves the employee data to the employees database', async 
 
     await server.initialize();
 
-    // when I make a `POST` request to the /employees url with the employee data
+    // and some employee data
     const employee = { name: 'John', jobTitle: 'Programmer' };
+
+    // when I make a `POST` request to the /employees url with the employee data
     await server.inject({ method: 'post', url: '/employees', payload: employee });
 
     // then the employee data is saved to the employees database
     const savedEmployees = await employeesDb.find().toArray();
-
     expect(savedEmployees).to.equal([employee], { skip: ['_id'] });
 });
