@@ -4,14 +4,21 @@
   "description": "An exercise in experimenting, learning and remembering basic app building techniques",
   "main": "employeeTest.js",
   "dependencies": {
-    "@hapi/code": "^5.3.1",
+    "@hapi/code": "^7.0.0",
     "@hapi/hapi": "^18.4.0",
     "@hapi/lab": "^19.1.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
+    "mongo-mock": "^3.8.1",
     "mongodb": "^3.2.7"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "lab -v employeeTest.js"
+    "testL": "lab employeeApiTest.js",
+    "testD": "lab --inspect -v employeeApiTest.js",
+    "test": "mocha --ui tdd employeeApiTest.js",
+    "mochaWatch": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
+    "mochaWatch1": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs employeeApiTest.js"
   },
   "repository": {
     "type": "git",
