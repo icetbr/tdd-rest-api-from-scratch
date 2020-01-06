@@ -84,12 +84,57 @@ test('POST /employees saves the employee data to the employees database', async 
     // when `POST` to /employees with the employee data
     const returned = await server.inject({ method: 'post', url: '/employees', payload: employee });
 
-    const savedEmployees = await db.collection('employees').find({}, { projection: { _id: 0 } }).toArray();
+    const savedEmployees = await db.collection('employees').find().toArray();
 
     // then it adds metadata
-    const { _id, dti } = savedEmployees[0];
+    expect(savedEmployees[0]).to.include.all.keys('_id', 'dti');
+
+    // and apply transformations
+    expect(savedEmployees[0]).to.to.containSubset('_id', 'dti');
+
+    // não preciso verificar individualmente pq unittest vai fazer isso!!!
+
+    const { _id, dti, ...savedEmployee } = savedEmployees[0];
     const metadata = { _id, dti };
-    expect(metadata).to.exist;
+    expect(metadata).to.exist; // equal vs to.include usefull error messages?
+    GENERATED VALUES
+
+    const metadata = savedEmployees[0];
+    employee._id = savedEmployees[0]._id;
+    employee.dti = savedEmployees[0].dti;
+    expect(returned.result).to.equal({ data: expectedReturned }, 'adds metadata');
+
+    // then it adds metadata
+    employee._id = savedEmployees[0]._id;
+    employee.dti = savedEmployees[0].dti;
+    expect(returned.result).to.equal({ data: expectedReturned }, 'adds metadata');
+
+    // then the employee data is saved to the employees database
+    expect(savedEmployees).to.deep.equal([employee]);
+});
+
+
+test('POST /employees saves the employee data to the employees database', async () => {
+    // given a fresh database
+    await db.initialize();
+    await db.collection('employees').deleteMany();
+
+    // and a server listening for requests
+    await server.initialize();
+
+    // and some employee data
+    const employee = { name: 'John', jobTitle: 'Programmer' };
+
+    // when `POST` to /employees with the employee data
+    const returned = await server.inject({ method: 'post', url: '/employees', payload: employee });
+
+    const savedEmployees = await db.collection('employees').find().toArray();
+
+    // then it adds metadata
+    const { _id, dti, ...savedEmployee } = savedEmployees[0];
+    const metadata = { _id, dti };
+    expect(metadata).to.exist; // equal vs to.include usefull error messages?
+    GENERATED VALUES
 
     const metadata = savedEmployees[0];
     employee._id = savedEmployees[0]._id;
