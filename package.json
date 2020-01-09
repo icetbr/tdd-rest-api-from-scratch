@@ -8,7 +8,7 @@
     "@hapi/hapi": "^18.4.0",
     "@hapi/lab": "^19.1.0",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.0",
     "mongo-mock": "^3.8.1",
     "mongodb": "^3.2.7"
   },
@@ -16,8 +16,8 @@
   "scripts": {
     "testL": "lab employeeApiTest.js",
     "testD": "lab --inspect -v employeeApiTest.js",
-    "test": "mocha --ui tdd employeeApiTest.js",
-    "mochaWatch": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
+    "test": "mocha --ui tdd --inline-diffs -r chai/register-expect employeeApiTest.js",
+    "mochaWatch": "mocha --inspect=9230 --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
     "mochaWatch1": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs employeeApiTest.js"
   },
   "repository": {

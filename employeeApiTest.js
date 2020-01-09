@@ -18,4 +18,8 @@ test('POST /employees saves the employee data to the employees database', async 
     // then the employee data is saved to the employees database
     const savedEmployees = await db.collection('employees').find({}, { projection: { _id: 0 } }).toArray();
     expect(savedEmployees).to.deep.equal([employee]);
+
+    // cleanup
+    await server.stop();
+    await db.close();
 });
