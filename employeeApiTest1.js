@@ -81,12 +81,15 @@ test('POST /employees saves the employee data to the employees database', async 
     // and some employee data
     const employee = { name: 'John', jobTitle: 'Programmer' };
 
+    // and now is 2018-04-23T10:26:00.996Z - problema de msedungos mudaro o utro digito!!
+
     // when `POST` to /employees with the employee data
     const returned = await server.inject({ method: 'post', url: '/employees', payload: employee });
 
     const savedEmployees = await db.collection('employees').find().toArray();
 
     // then it adds metadata
+    expect(savedEmployees[0]).toMatchObject({dti: expect.toMatch});
     expect(savedEmployees[0]).to.include.all.keys('_id', 'dti');
 
     // and apply transformations
