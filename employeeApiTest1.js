@@ -1,6 +1,7 @@
 const db = require('./db');
 const server = require('./server');
 
+
 test('POST adiciona metadados, desnormaliza, salva, salva no histórico e retorna o documento salvo e normalizado', async () => {
     // prepare
     await prepareDb();

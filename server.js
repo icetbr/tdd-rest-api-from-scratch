@@ -12,7 +12,8 @@ server.route({
   path: '/employees',
   handler: async request => {
     await db.initialize();
-    return await db.collection('employees').insertOne(request.payload);
+    const result = await db.collection('employees').insertOne(request.payload);
+    return result.ops[0];
   },
 });
 
