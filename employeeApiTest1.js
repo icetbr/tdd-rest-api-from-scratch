@@ -65,6 +65,14 @@ test('POST adiciona metadados, desnormaliza, salva, salva no histórico e retorn
 
 validate
 add metadata
+        company: Joi.string(),
+        usu: Joi.string(),
+        dti: Joi.date(),
+        key: Joi.string(),
+        cod: Joi.string(),
+        dsc: Joi.string(),
+        vld: Joi.boolean(),
+        hidden: Joi.boolean(),
 transform to legacy format
 save to db
 save copy to historyDb
@@ -82,7 +90,7 @@ test('POST /employees saves the employee data to the employees database', async 
     // and some employee data
     const employee = { name: 'John', jobTitle: 'Programmer' };
 
-    // and now is 2018-04-23T10:26:00.996Z - problema de msedungos mudaro o utro digito!!
+    // and the current time now is 2018-04-23T10:26:00.996Z - problema de msedungos mudaro o utro digito!!
 
     // when `POST` to /employees with the employee data
     const returned = await server.inject({ method: 'post', url: '/employees', payload: employee });
@@ -90,8 +98,8 @@ test('POST /employees saves the employee data to the employees database', async 
     const savedEmployees = await db.collection('employees').find().toArray();
 
     // then it adds metadata
-    expect(savedEmployees[0]).toMatchObject({dti: expect.toMatch});
-    expect(savedEmployees[0]).to.include.all.keys('_id', 'dti');
+    expect(savedEmployees[0]).toMatchObject({ dti: expect.stringMatching(new Date().toISOString().substr(0, 12))});
+    // expect(savedEmployees[0]).to.include.all.keys('_id', 'dti');
 
     // and apply transformations
     expect(savedEmployees[0]).to.to.containSubset('_id', 'dti');
