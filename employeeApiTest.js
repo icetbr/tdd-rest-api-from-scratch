@@ -4,7 +4,7 @@ const server = require('./server');
 // const { expect } = require('@hapi/code');
 // const { test } = exports.lab = require('@hapi/lab').script();
 
-test('POST /employees saves the employee data to the employees database and returns the saved employee', async function () {
+test('POST /employees saves the employee data to the database and returns the saved employee', async () => {
     // given a fresh database
     await db.initialize();
     await db.collection('employees').deleteMany();
@@ -18,11 +18,18 @@ test('POST /employees saves the employee data to the employees database and retu
     // when `POST` to /employees with the employee data
     const response = await server.inject({ method: 'post', url: '/employees', payload: employee });
 
-    // then the employee data is saved to the employees database
+    // then the employee data is saved to the database
     const savedEmployees = await db.collection('employees').find({}, { projection: { _id: 0 } }).toArray();
     expect(savedEmployees).to.deep.equal([employee]);
 
     // and the saved employee is returned
-    // expect({ a: 1 }).to.deep.equal({ a: 2 });
     expect(response.result).to.deep.equal(employee);
+
+    // and a copy is saved for history
+    // const savedEmployeesHistory = await db.collection('employees_history').find({}, { projection: { _id: 0 } }).toArray();
+    // expect(savedEmployeesHistory).to.deep.equal([employee]);
+
+    // cleanup
+    await server.stop();
+    await db.close();
 });
