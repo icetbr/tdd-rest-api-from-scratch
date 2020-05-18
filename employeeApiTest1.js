@@ -63,22 +63,6 @@ test('POST adiciona metadados, desnormaliza, salva, salva no histórico e retorn
     MockDate.reset();
 });
 
-validate
-add metadata
-        company: Joi.string(),
-        usu: Joi.string(),
-        dti: Joi.date(),
-        key: Joi.string(),
-        cod: Joi.string(),
-        dsc: Joi.string(),
-        vld: Joi.boolean(),
-        hidden: Joi.boolean(),
-transform to legacy format
-save to db
-save copy to historyDb
-emit event
-return non transformed
-
 test('POST /employees saves the employee data to the employees database', async () => {
     // given a fresh database
     await db.initialize();

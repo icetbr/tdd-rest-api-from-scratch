@@ -13,12 +13,15 @@
     "mongo-mock": "^3.8.1",
     "mongodb": "^3.2.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sinon": "^9.0.2"
+  },
   "scripts": {
     "lab": "lab employeeApiTestLab.js",
     "labD": "lab --inspect -v employeeApiTest.js",
     "jest1": "jest employeeApiTest.js",
     "test": "mocha --ui tdd --inline-diffs --inspect=9230 -r chai/register-expect --full-trace --exit employeeApiTest.js || exit 0",
+    "testa": "mocha --ui tdd --inline-diffs --inspect=9230 -r chai/register-expect --full-trace --exit a.js || exit 0",
     "mochaWatch": "mocha --inspect=9230 --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
     "mochaWatch1": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs employeeApiTest.js"
   },

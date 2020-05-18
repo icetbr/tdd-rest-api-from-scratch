@@ -31,12 +31,6 @@ server.route({
   method: 'POST',
   path: '/employees',
   handler: async request => {
-    if (!request.payload.name) return {
-      statusCode: 400,
-      error: 'Bad Request',
-      message: '"name" is required',
-    }
-
     await db.initialize();
 
     const metadata = getMetadata('mary@hr.com'); // you would get this from request.auth,
