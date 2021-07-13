@@ -1,2 +1,9 @@
 node_modules
 .vscode
+build
+otherTestFrameworks
+test/unit
+run.sh
+fix2*
+fix3*
+src/db_copy.js

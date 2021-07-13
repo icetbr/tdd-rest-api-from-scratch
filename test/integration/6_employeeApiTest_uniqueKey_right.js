@@ -1,3 +1,6 @@
+const chai = require('chai');
+chai.use(require('chai-deep-match'));
+
 const db = require('./db');
 const server = require('./server');
 const sinon = require('sinon');
@@ -20,7 +23,11 @@ test('POST /employees saves the employee data to the database, adds metadata, sa
     // when `POST` to /employees with the employee data
     const response = await server.inject({ method: 'post', url: '/employees', payload: employee });
 
-    // then it adds metadata
+    // then it saves the employee to the database
+    const savedEmployees = await db.collection('employees').find().toArray();
+    expect(savedEmployees).to.have.length(1);
+
+    // and it adds metadata
     const metadata = {
         _id: response.result._id,
         uniqueKey: response.result._id.toString(),
@@ -28,11 +35,11 @@ test('POST /employees saves the employee data to the database, adds metadata, sa
         updatedBy: 'mary@hr.com',
         isDeleted: false,
     };
-    const expectedEmployee = { ...employee, ...metadata };
+    expect(savedEmployees[0]).to.deep.match(metadata);
 
-    // and the employee data is saved to the database
-    const savedEmployees = await db.collection('employees').find().toArray();
-    expect(savedEmployees).to.deep.equal([expectedEmployee]);
+    // and no extra fields are added
+    const expectedEmployee = { ...employee, ...metadata };
+    expect(savedEmployees[0]).to.deep.equal(expectedEmployee);
 
     // and a copy is saved for history
     const savedEmployeesHistory = await db.collection('employees_history').find().toArray();
