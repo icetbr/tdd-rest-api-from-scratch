@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const db = require('./db');
+const db = require('src/db');
 const ObjectId = require('mongodb').ObjectID;
 
 const server = Hapi.server({

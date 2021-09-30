@@ -1,8 +1,8 @@
 const chai = require('chai');
 chai.use(require('chai-deep-match'));
 
-const db = require('./db');
-const server = require('./server');
+const db = require('src/db');
+const server = require(`${process.env.server}`);
 const sinon = require('sinon');
 
 test('POST /employees saves the employee data to the database, adds metadata, saves a copy for history and returns the saved employee', async () => {
@@ -13,6 +13,7 @@ test('POST /employees saves the employee data to the database, adds metadata, sa
     // given a fresh database
     await db.initialize();
     await db.collection('employees').deleteMany();
+    await db.collection('employees_history').deleteMany();
 
     // and a server listening for requests
     await server.initialize();

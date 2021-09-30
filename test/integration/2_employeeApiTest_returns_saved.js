@@ -1,5 +1,5 @@
-const db = require('./db');
-const server = require('./server');
+const db = require('src/db');
+const server = require(`${process.env.server}`);
 
 test('POST /employees saves the employee data to the database and returns the saved employee', async () => {
     // given a fresh database

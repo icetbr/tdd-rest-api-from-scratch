@@ -12,15 +12,6 @@ module.exports = {
     db = client.db('tdd-rest-api-from-scratch');
   },
 
-  async drop() {
-    // This is faster then dropping the database. See https://docs.mongodb.com/manual/reference/method/db.collection.remove/
-    const collections = db.collections();
-    for (const collection in collections) {
-      if (collection.collectionName.indexOf('system') === 0) continue;
-      await collection.removeMany();
-    }
-  },
-
   collection(collection) {
     return db.collection(collection);
   },
