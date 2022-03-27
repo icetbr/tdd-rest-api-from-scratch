@@ -1,7 +1,7 @@
 const db = require('src/db');
 const server = require(`${process.env.server}`);
 
-test('POST /employees saves the employee data to the database and returns the saved employee', async () => {
+test('POST /employees', async () => {
     // given a fresh database
     await db.initialize();
     await db.collection('employees').deleteMany();
@@ -15,11 +15,11 @@ test('POST /employees saves the employee data to the database and returns the sa
     // when `POST` to /employees with the employee data
     const response = await server.inject({ method: 'post', url: '/employees', payload: employee });
 
-    // then the employee data is saved to the database
+    // then it saves the employee data to the database
     const savedEmployees = await db.collection('employees').find({}, { projection: { _id: 0 } }).toArray();
     expect(savedEmployees).to.deep.equal([employee]);
 
-    // and the saved employee is returned
+    // and it returns the saved employee
     expect(response.result).to.deep.equal({ ...employee, _id: response.result._id } );
 
     // cleanup

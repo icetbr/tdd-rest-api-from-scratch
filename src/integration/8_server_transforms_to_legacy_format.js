@@ -15,17 +15,19 @@ server.route({
     await db.initialize();
 
     const _id = new ObjectId();
+    const { name, jobTitle, ...employeeFields } = request.payload;
     const employee = {
-      ...request.payload,
+      ...employeeFields,
+      STR_name: name,
+      STR_jobTitle: jobTitle,
+      updatedBy: request.headers.authorization,
+      updatedAt: new Date().toISOString().replace('T', '_').substring(0, 19),
       _id,
-      uniqueKey: _id.toString(),
-      updatedBy: 'mary@hr.com', // you would get this from request.auth,
-      updatedAt: new Date(),
-      isDeleted: false,
+      uniqueKey: _id.toString(), // toString just for better error messages, in real life a better assertion should be used
     };
 
     const result = await db.collection('employees').insertOne(employee);
-    await db.collection('employees_history').insertOne(employee);
+    await db.collection('employees_history').insertOne({ ...employee, _id: new ObjectId() });
 
     return result.ops[0];
   },

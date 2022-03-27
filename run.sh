@@ -3,18 +3,25 @@
 # error handling, see https://mobile.twitter.com/b0rk/status/1314345978963648524
 set -euo pipefail
 
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+PURPLE='\033[0;35m'
+RESET='\033[0m'
+BBLACK='\033[1;30m'
+
 export NODE_PATH=.
+
 # --full-trace --exit
 mocha="./node_modules/mocha/bin/mocha
             -r chai/register-expect
-            --inline-diffs
             --bail
             --leaks
+            --exit
             --ui tdd
+            --inspect-brk=9230
 "
-
 # --inspect=9230
-
 # --reporter min
 # "mochaWatch": "mocha --inspect=9230 --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
 
@@ -24,15 +31,53 @@ mocha="./node_modules/mocha/bin/mocha
 # test() { $mocha test/integration/$1* ;}
 
 
-# example: ./run.sh test i1 => mocha src/integration/1_employeeApiTest_saves.js
+# example: run test i1 WILL RUN mocha test/integration/1_employeeApiTest_saves.js
 test() {
     folder1stChar=${1:0:1}
     fileNumber=${1:1}
     folder=$([ $folder1stChar == 'i' ] && echo integration || echo unit)
     files=( src/$folder/$fileNumber* )
-    export server=${files[*]}
+    export server=${files[*]}           # ex: server=src/integration/1_employeeApiTest_saves.js USED FORs require(`${process.env.server}`)
     $mocha test/$folder/$fileNumber*
 }
+
+# example: run perf test i1
+perf() {
+    for i in {1..10}; do time $@; done 2>&1 | grep ^real | sed s/,/./ | sed -e s/.*m// | awk '{sum += $1} END {print sum / NR}'
+}
+
+# example: run perf test i1
+# https://serverfault.com/questions/175376/redirect-output-of-time-command-in-unix-into-a-variable-in-bash
+perfFull() {
+    TIMEFORMAT=%R                       # `time` outputs only a number, not 3 lines
+    export LC_NUMERIC="en_US.UTF-8"     # `time` outputs `0.100` instead of local format, like `0,100`
+
+    times=10
+
+    echo -e -n "\nWARMING UP ${PURPLE}$@${RESET}"
+    $@ # execute passed parameters
+
+    echo -e -n "RUNNING ${PURPLE}$times times${RESET}"
+
+    exec 3>&1 4>&2                                   # redirects subshell streams
+    durations=()
+    for _ in `seq $times`; {
+        durations+=(`{ time $@ 1>&3 2>&4; } 2>&1`)   # passes stdout through so only `time` is caputured
+    }
+    exec 3>&- 4>&-                                   # reset subshell streams
+
+    printf '%s\n' "${durations[@]}"
+
+    total=0
+    for duration in "${durations[@]}"; {
+        total=$(bc <<< "scale=3;$total + $duration")
+    }
+
+    average=($(bc <<< "scale=3;$total/$times"))
+    echo -e "${GREEN}$average average${RESET}"
+}
+
+
 
 # test
 

@@ -12,10 +12,7 @@ server.route({
   path: '/employees',
   handler: async request => {
     await db.initialize();
-    const result = await db.collection('employees').insertOne(request.payload);
-    await db.collection('employees_history').insertOne(request.payload);
-
-    return result.ops[0];
+    return await db.collection('employees').insertOne(request.payload);
   },
 });
 

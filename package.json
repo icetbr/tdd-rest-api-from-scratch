@@ -1,8 +1,4 @@
 {
-  "name": "tdd-rest-api-from-scratch",
-  "version": "1.0.0",
-  "description": "An exercise in experimenting, learning and remembering basic app building techniques",
-  "main": "employeeTest.js",
   "dependencies": {
     "@hapi/code": "^7.0.0",
     "@hapi/hapi": "^18.4.0",
@@ -17,28 +13,5 @@
     "mongo-mock": "^4.0.0",
     "mongodb": "^3.6.5",
     "sinon": "^9.0.2"
-  },
-  "scripts": {
-    "lab": "lab employeeApiTestLab.js",
-    "lab1": "node --inspect=9230 ./node_modules/@hapi/lab/bin/lab labSetup.js employeeApiTest.js",
-    "labD": "lab --inspect -v employeeApiTest.js",
-    "jest": "node --inspect=9230 node_modules/.bin/jest employeeApiTest.js",
-    "testTdd": "mocha --ui tdd --bail --inspect=9230 -r chai/register-expect --full-trace --exit src/unit/employeeApiTest.js || exit 0",
-    "testUnit": "mocha --ui tdd --bail --inspect=9230 -r chai/register-expect --full-trace --exit src/unit/employeeApi2Test.js || exit 0",
-    "testTddInline": "mocha --ui tdd --inline-diffs --bail --inspect=9230 -r chai/register-expect --full-trace --exit employeeApiTest.js || exit 0",
-    "test": "mocha --inspect=9230 --bail --inline-diffs -r chai/register-expect --full-trace --exit employeeApiTest.js || exit 0",
-    "testTmp": "mocha --inspect=9230 --bail --inline-diffs -r chai/register-expect --reporter min --full-trace --exit employeeApiTestTmp.js || exit 0",
-    "mochaWatch": "mocha --inspect=9230 --ui tdd --reporter min --watch --inline-diffs -r chai/register-expect employeeApiTest.js",
-    "mochaWatch1": "mocha --inspect --ui tdd --reporter min --watch --inline-diffs employeeApiTest.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/icetbr/tdd-rest-api-from-scratch.git"
-  },
-  "author": "icetbr",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/icetbr/tdd-rest-api-from-scratch/issues"
-  },
-  "homepage": "https://github.com/icetbr/tdd-rest-api-from-scratch#readme"
+  }
 }
